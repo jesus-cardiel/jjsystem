@@ -1,4 +1,5 @@
 <?php
+header('Content-Type: text/html; charset=utf-8');
 session_start();
 require_once 'db.php';
 
@@ -192,14 +193,19 @@ $team = $stmt_team->fetchAll();
         <div class="container py-5">
             <h2 class="section-title" data-aos="fade-up"><?= $t['section_portfolio'] ?></h2>
             <div class="row g-4">
-                <?php foreach ($portfolio as $item): ?>
+                <?php foreach ($portfolio as $item): 
+                    $hasGallery = in_array($item['id'], [1, 2, 3, 5]);
+                    $projectKeys = [1 => 'quiniela', 2 => 'gestion_de_informe', 3 => 'tickets', 5 => 'jjsystem'];
+                    $projectKey = isset($projectKeys[$item['id']]) ? $projectKeys[$item['id']] : '';
+                    $btnAttr = $hasGallery ? 'wrapper-class="portfolio-gallery-trigger" data-project="' . $projectKey . '"' : 'href="' . $item['project_url'] . '"';
+                ?>
                     <div class="col-md-4" data-aos="zoom-in" data-aos-delay="<?= $item['animation_delay'] ?>">
                         <div class="portfolio-item glass-card">
                             <img src="<?= $item['image_url'] ?>" alt="<?= htmlspecialchars($item['title']) ?>" class="img-fluid portfolio-img" referrerpolicy="no-referrer">
                             <div class="portfolio-overlay">
                                 <span class="badge bg-purple mb-2"><?= htmlspecialchars($item['category']) ?></span>
                                 <h4 class="mb-3"><?= htmlspecialchars($item['title']) ?></h4>
-                                <a href="<?= $item['project_url'] ?>" class="btn btn-sm btn-outline-light rounded-pill"><?= $t['btn_view_project'] ?></a>
+                                <a <?= $btnAttr ?> class="btn btn-sm btn-outline-light rounded-pill <?= $hasGallery ? 'view-gallery' : '' ?>"><?= $t['btn_view_project'] ?></a>
                             </div>
                         </div>
                     </div>
@@ -287,6 +293,23 @@ $team = $stmt_team->fetchAll();
             </div>
         </div>
     </section>
+
+    <!-- Portolio Gallery Modal -->
+    <div class="modal fade" id="galleryModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content bg-dark border-secondary">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title text-white" id="galleryTitle">Proyecto Detalle</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-0">
+                    <div id="galleryContent" class="gallery-collage p-4">
+                        <!-- Images will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Contact Section -->
     <section id="contacto" class="py-5">
