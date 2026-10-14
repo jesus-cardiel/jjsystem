@@ -238,6 +238,8 @@ $current_canonical = $site_url . ($lang === 'en' ? '/?lang=en' : '/');
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css?v=<?= filemtime('style.css') ?>">
+    <!-- Chatbot CSS -->
+    <link rel="stylesheet" href="chatbot.css?v=<?= filemtime('chatbot.css') ?>">
 </head>
 <body>
     <!-- Preloader -->
@@ -511,24 +513,13 @@ $current_canonical = $site_url . ($lang === 'en' ? '/?lang=en' : '/');
 
     <script src="script.js?v=<?= filemtime('script.js') ?>"></script>
 
-    <!-- Botón Flotante de WhatsApp -->
-    <div class="whatsapp-float-container" style="position: fixed !important; bottom: 28px !important; right: 28px !important; z-index: 999999 !important; display: block !important;">
-        <a href="https://wa.me/<?= htmlspecialchars($whatsapp_number) ?>?text=<?= urlencode($t['whatsapp_message']) ?>" 
-           class="whatsapp-btn" 
-           target="_blank" 
-           rel="noopener noreferrer" 
-           aria-label="WhatsApp Asesor" 
-           id="whatsappBtn"
-           style="display: flex; align-items: center; text-decoration: none; gap: 12px;">
-            <span class="whatsapp-tooltip d-none d-md-flex align-items-center">
-                <span class="online-indicator"></span>
-                <?= htmlspecialchars($t['whatsapp_tooltip']) ?>
-            </span>
-            <div class="whatsapp-icon-wrapper" style="width: 60px; height: 60px; background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #ffffff; font-size: 32px; box-shadow: 0 4px 20px rgba(37, 211, 102, 0.45);">
-                <i class="bi bi-whatsapp"></i>
-                <span class="whatsapp-pulse"></span>
-            </div>
-        </a>
-    </div>
+    <!-- Chatbot Virtual Assistant Config & Script -->
+    <script>
+        window.JJBotConfig = {
+            lang: <?= json_encode($lang) ?>,
+            whatsappNumber: <?= json_encode($whatsapp_number) ?>
+        };
+    </script>
+    <script src="chatbot.js?v=<?= filemtime('chatbot.js') ?>"></script>
 </body>
 </html>
