@@ -1,0 +1,12 @@
+# robots.txt for jjsystem
+User-agent: *
+Allow: /
+
+# Disallow access to backend / database files
+Disallow: /db.php
+Disallow: /database.sql
+Disallow: /blur_test.php
+Disallow: /portfolio_images.txt
+
+# Sitemap location
+Sitemap: https://jjsystem.com.ve/sitemap.xml

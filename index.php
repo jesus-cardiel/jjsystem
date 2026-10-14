@@ -12,7 +12,9 @@ $lang = isset($_SESSION['lang']) ? $_SESSION['lang'] : 'es';
 // Traducciones de textos estáticos
 $texts = [
     'es' => [
-        'title' => 'jjsystem | Innovación en Desarrollo Web',
+        'title' => 'jjsystem | Innovación en Desarrollo Web y Soluciones Digitales',
+        'meta_desc' => 'En jjsystem creamos experiencias web innovadoras, interactivas y escalables. Desarrollo web a medida, diseño UI/UX, comercio electrónico y posicionamiento.',
+        'meta_keywords' => 'desarrollo web, paginas web, diseño web profesional, diseño UI UX, desarrollo web venezuela, ecommerce, software a medida, programacion web, jjsystem',
         'nav_home' => 'Inicio',
         'nav_services' => 'Servicios',
         'nav_portfolio' => 'Portafolio',
@@ -41,10 +43,15 @@ $texts = [
         'a2' => 'El tiempo varía según la complejidad. Una web informativa toma 2-3 semanas, mientras que un e-commerce complejo puede tomar 4-8 semanas.',
         'q3' => '¿Ofrecen soporte post-lanzamiento?',
         'a3' => 'Sí, todos nuestros proyectos incluyen soporte técnico y mantenimiento para asegurar que tu sitio funcione correctamente.',
-        'lang_toggle' => $lang == 'es' ? '<img src="https://flagcdn.com/w40/us.png" class="flag-icon" alt="US"> English' : '<img src="https://flagcdn.com/w40/ve.png" class="flag-icon" alt="VE"> Español'
+        'lang_toggle' => $lang == 'es' ? '<img src="https://flagcdn.com/w40/us.png" class="flag-icon" alt="US"> English' : '<img src="https://flagcdn.com/w40/ve.png" class="flag-icon" alt="VE"> Español',
+        'whatsapp_tooltip' => '¿Necesitas asesoría? ¡Chatea con nosotros!',
+        'whatsapp_message' => '¡Hola jjsystem! Deseo obtener asesoría sobre sus servicios de desarrollo web.',
+        'contact_whatsapp' => 'Chatea con un asesor por WhatsApp'
     ],
     'en' => [
-        'title' => 'jjsystem | Web Development Innovation',
+        'title' => 'jjsystem | Web Development Innovation & Digital Solutions',
+        'meta_desc' => 'At jjsystem we create innovative, interactive, and scalable web experiences. Custom web development, UI/UX design, e-commerce, and digital solutions.',
+        'meta_keywords' => 'web development, custom web design, UI UX design, ecommerce development, web applications, custom software, digital solutions, jjsystem',
         'nav_home' => 'Home',
         'nav_services' => 'Services',
         'nav_portfolio' => 'Portfolio',
@@ -73,7 +80,10 @@ $texts = [
         'a2' => 'Time varies by complexity. A standard website takes 2-3 weeks, while a complex e-commerce project can take 4-8 weeks.',
         'q3' => 'Do you offer post-launch support?',
         'a3' => 'Yes, all our projects include technical support and maintenance to ensure your site runs smoothly.',
-        'lang_toggle' => $lang == 'es' ? '<img src="https://flagcdn.com/w40/us.png" class="flag-icon" alt="US"> English' : '<img src="https://flagcdn.com/w40/ve.png" class="flag-icon" alt="VE"> Español'
+        'lang_toggle' => $lang == 'es' ? '<img src="https://flagcdn.com/w40/us.png" class="flag-icon" alt="US"> English' : '<img src="https://flagcdn.com/w40/ve.png" class="flag-icon" alt="VE"> Español',
+        'whatsapp_tooltip' => 'Need advice? Chat with an advisor!',
+        'whatsapp_message' => 'Hello jjsystem! I would like to get advice about your web development services.',
+        'contact_whatsapp' => 'Chat with an advisor on WhatsApp'
     ]
 ];
 
@@ -95,13 +105,129 @@ $role_col = $lang == 'en' ? 'role_en' : 'role';
 $bio_col = $lang == 'en' ? 'bio_en' : 'bio';
 $stmt_team = $pdo->query("SELECT name, image_url, animation_delay, $role_col as role, $bio_col as bio FROM team ORDER BY id ASC");
 $team = $stmt_team->fetchAll();
+// Configuración de Google Analytics (ID de Medición)
+$ga_id = 'G-XN4SVN8Z16';
+
+// Configuración de WhatsApp (Coloca tu número con código de país, sin '+', ej: 584121234567)
+$whatsapp_number = '584160108329';
+
+// Configuración SEO
+$site_url = 'https://jjsystem.com.ve';
+$current_canonical = $site_url . ($lang === 'en' ? '/?lang=en' : '/');
 ?>
 <!DOCTYPE html>
 <html lang="<?= $lang ?>">
 <head>
+    <?php if (!empty($ga_id)): ?>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=<?= htmlspecialchars($ga_id) ?>"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', '<?= htmlspecialchars($ga_id) ?>');
+    </script>
+    <?php endif; ?>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $t['title'] ?></title>
+    <title><?= htmlspecialchars($t['title']) ?></title>
+
+    <!-- Metadatos SEO Principales -->
+    <meta name="description" content="<?= htmlspecialchars($t['meta_desc']) ?>">
+    <meta name="keywords" content="<?= htmlspecialchars($t['meta_keywords']) ?>">
+    <meta name="author" content="jjsystem">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <link rel="canonical" href="<?= $current_canonical ?>">
+
+    <!-- Enlaces Multidioma (Hreflang) -->
+    <link rel="alternate" hreflang="es" href="<?= $site_url ?>/?lang=es">
+    <link rel="alternate" hreflang="en" href="<?= $site_url ?>/?lang=en">
+    <link rel="alternate" hreflang="x-default" href="<?= $site_url ?>/">
+
+    <!-- Open Graph / Redes Sociales (Facebook, WhatsApp, LinkedIn) -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="jjsystem">
+    <meta property="og:title" content="<?= htmlspecialchars($t['title']) ?>">
+    <meta property="og:description" content="<?= htmlspecialchars($t['meta_desc']) ?>">
+    <meta property="og:url" content="<?= $current_canonical ?>">
+    <meta property="og:image" content="<?= $site_url ?>/hero-illustration.png">
+    <meta property="og:image:alt" content="jjsystem - Innovación en Desarrollo Web">
+    <meta property="og:locale" content="<?= $lang == 'es' ? 'es_VE' : 'en_US' ?>">
+    <meta property="og:locale:alternate" content="<?= $lang == 'es' ? 'en_US' : 'es_VE' ?>">
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="<?= htmlspecialchars($t['title']) ?>">
+    <meta name="twitter:description" content="<?= htmlspecialchars($t['meta_desc']) ?>">
+    <meta name="twitter:image" content="<?= $site_url ?>/hero-illustration.png">
+
+    <!-- Color del navegador móvil -->
+    <meta name="theme-color" content="#7928ca">
+
+    <!-- Datos Estructurados Schema.org (JSON-LD) para Google -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "ProfessionalService",
+                "@id": "<?= $site_url ?>/#organization",
+                "name": "jjsystem",
+                "url": "<?= $site_url ?>/",
+                "logo": "<?= $site_url ?>/hero-illustration.png",
+                "image": "<?= $site_url ?>/hero-illustration.png",
+                "description": "<?= addslashes($t['meta_desc']) ?>",
+                "telephone": "+584160108329",
+                "email": "hola@jjsystem.com",
+                "areaServed": "Worldwide",
+                "sameAs": [
+                    "https://www.linkedin.com/",
+                    "https://github.com/",
+                    "https://twitter.com/"
+                ]
+            },
+            {
+                "@type": "WebSite",
+                "@id": "<?= $site_url ?>/#website",
+                "url": "<?= $site_url ?>/",
+                "name": "jjsystem",
+                "inLanguage": "<?= $lang ?>"
+            },
+            {
+                "@type": "FAQPage",
+                "@id": "<?= $site_url ?>/#faq",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": <?= json_encode($t['q1']) ?>,
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": <?= json_encode($t['a1']) ?>
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": <?= json_encode($t['q2']) ?>,
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": <?= json_encode($t['a2']) ?>
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": <?= json_encode($t['q3']) ?>,
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": <?= json_encode($t['a3']) ?>
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+    </script>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
@@ -111,7 +237,7 @@ $team = $stmt_team->fetchAll();
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=<?= filemtime('style.css') ?>">
 </head>
 <body>
     <!-- Preloader -->
@@ -163,7 +289,7 @@ $team = $stmt_team->fetchAll();
                 </div>
                 <div class="col-lg-6 d-none d-lg-block" data-aos="zoom-in" data-aos-delay="200">
                     <div class="hero-img-container">
-                        <img src="hero-illustration.png" alt="Innovation" class="img-fluid hero-img-interactive">
+                        <img src="hero-illustration.png" alt="<?= $lang == 'es' ? 'jjsystem - Innovación y Desarrollo Web' : 'jjsystem - Innovation and Web Development' ?>" class="img-fluid hero-img-interactive">
                     </div>
                 </div>
             </div>
@@ -201,7 +327,7 @@ $team = $stmt_team->fetchAll();
                 ?>
                     <div class="col-md-4" data-aos="zoom-in" data-aos-delay="<?= $item['animation_delay'] ?>">
                         <div class="portfolio-item glass-card">
-                            <img src="<?= $item['image_url'] ?>" alt="<?= htmlspecialchars($item['title']) ?>" class="img-fluid portfolio-img" referrerpolicy="no-referrer">
+                            <img src="<?= $item['image_url'] ?>" alt="<?= htmlspecialchars($item['title']) ?>" class="img-fluid portfolio-img" loading="lazy" referrerpolicy="no-referrer">
                             <div class="portfolio-overlay">
                                 <span class="badge bg-purple mb-2"><?= htmlspecialchars($item['category']) ?></span>
                                 <h4 class="mb-3"><?= htmlspecialchars($item['title']) ?></h4>
@@ -226,7 +352,7 @@ $team = $stmt_team->fetchAll();
                                 <!-- Parte Frontal: Foto y Especialidad -->
                                 <div class="team-card-front">
                                     <div class="team-img-container mb-3">
-                                        <img src="<?= $member['image_url'] ?>" alt="<?= htmlspecialchars($member['name']) ?>" class="img-fluid team-img">
+                                        <img src="<?= $member['image_url'] ?>" alt="<?= htmlspecialchars($member['name']) ?>" class="img-fluid team-img" loading="lazy">
                                     </div>
                                     <p class="badge bg-purple mb-0 fs-5"><?= htmlspecialchars($member['role']) ?></p>
                                 </div>
@@ -323,6 +449,12 @@ $team = $stmt_team->fetchAll();
                             <i class="bi bi-envelope-fill gradient-text fs-4 me-3"></i>
                             <span>hola@jjsystem.com</span>
                         </div>
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="bi bi-whatsapp text-success fs-4 me-3"></i>
+                            <a href="https://wa.me/<?= htmlspecialchars($whatsapp_number) ?>?text=<?= urlencode($t['whatsapp_message']) ?>" target="_blank" rel="noopener noreferrer" class="text-white text-decoration-none whatsapp-contact-link">
+                                <?= $t['contact_whatsapp'] ?> <span class="text-muted ms-1">(+58 416-0108329)</span>
+                            </a>
+                        </div>
                         <div class="d-flex align-items-center">
                             <i class="bi bi-geo-alt-fill gradient-text fs-4 me-3"></i>
                             <span>Ciudad Creative, Tech District</span>
@@ -376,8 +508,27 @@ $team = $stmt_team->fetchAll();
             ? ['Desarrollo Web', 'Soluciones Digitales', 'Apps a Medida', 'E-commerce Pro'] 
             : ['Web Development', 'Digital Solutions', 'Custom Apps', 'E-commerce Pro']) ?>;
     </script>
-    </script>
 
-    <script src="script.js"></script>
+    <script src="script.js?v=<?= filemtime('script.js') ?>"></script>
+
+    <!-- Botón Flotante de WhatsApp -->
+    <div class="whatsapp-float-container" style="position: fixed !important; bottom: 28px !important; right: 28px !important; z-index: 999999 !important; display: block !important;">
+        <a href="https://wa.me/<?= htmlspecialchars($whatsapp_number) ?>?text=<?= urlencode($t['whatsapp_message']) ?>" 
+           class="whatsapp-btn" 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           aria-label="WhatsApp Asesor" 
+           id="whatsappBtn"
+           style="display: flex; align-items: center; text-decoration: none; gap: 12px;">
+            <span class="whatsapp-tooltip d-none d-md-flex align-items-center">
+                <span class="online-indicator"></span>
+                <?= htmlspecialchars($t['whatsapp_tooltip']) ?>
+            </span>
+            <div class="whatsapp-icon-wrapper" style="width: 60px; height: 60px; background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #ffffff; font-size: 32px; box-shadow: 0 4px 20px rgba(37, 211, 102, 0.45);">
+                <i class="bi bi-whatsapp"></i>
+                <span class="whatsapp-pulse"></span>
+            </div>
+        </a>
+    </div>
 </body>
 </html>

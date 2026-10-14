@@ -132,4 +132,16 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }, 1000);
     });
+
+    // WhatsApp Click Analytics Tracking
+    document.querySelectorAll('#whatsappBtn, .whatsapp-contact-link').forEach(btn => {
+        btn.addEventListener('click', () => {
+            if (typeof gtag === 'function') {
+                gtag('event', 'whatsapp_click', {
+                    'event_category': 'Contact',
+                    'event_label': 'Asesor WhatsApp'
+                });
+            }
+        });
+    });
 });
